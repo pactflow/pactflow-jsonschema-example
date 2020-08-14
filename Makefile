@@ -71,7 +71,7 @@ fake_ci_provider:
 ci_provider: clean fetch_contract test can_i_deploy_provider $(PROVIDER_DEPLOY_TARGET)
 
 fetch_contract:
-	@curl ${AUTH_HEADER} "${PACT_BROKER_BASE_URL}/pacts/provider/${PROVIDER}/consumer/${PACTICIPANT}/latest/master" > ${DOWNLOADED_RAW_PACT}
+	@curl ${AUTH_HEADER} "${PACT_BROKER_BASE_URL}/pacts/provider/${PROVIDER}/consumer/${PACTICIPANT}/latest/${TRAVIS_BRANCH}" > ${DOWNLOADED_RAW_PACT}
 	@cat ${DOWNLOADED_RAW_PACT} | jq .schema > ${DOWNLOADED_PACT}
 
 test:
