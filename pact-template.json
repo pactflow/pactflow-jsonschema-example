@@ -1,0 +1,4 @@
+{
+  "consumer": { "name": "example-jsonschema-consumer" },
+  "provider": { "name": "example-jsonschema-provider" }
+}

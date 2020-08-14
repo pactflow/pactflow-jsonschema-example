@@ -1,0 +1,23 @@
+{
+  "name": "pactflow-schema-example",
+  "version": "1.0.0",
+  "description": "Demonstrate how JSON Schemas may be used with Pactflow to manage API contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "keywords": [
+    "API",
+    "contract",
+    "testing",
+    "pact",
+    "pactflow",
+    "json-schema"
+  ],
+  "author": "Matt Fellows <m@onegeek.com.au>",
+  "license": "ISC",
+  "devDependencies": {
+    "json-schema-diff": "^0.15.0",
+    "typescript-json-schema": "^0.42.0"
+  }
+}
