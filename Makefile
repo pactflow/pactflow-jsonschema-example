@@ -22,6 +22,12 @@ else
 	PROVIDER_DEPLOY_TARGET=no_deploy
 endif
 
+# emulates the travis build
+fake_ci:
+	TRAVIS_COMMIT=`git rev-parse --short HEAD`+`date "+%m%d%H%M%Y"` \
+	TRAVIS_BRANCH=`git rev-parse --abbrev-ref HEAD` \
+	./scripts/ci.sh
+
 ##
 ## Consumer side
 ##
