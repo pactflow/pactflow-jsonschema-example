@@ -1,8 +1,12 @@
 # JSON Schema Example
 
+[![Build Status](https://travis-ci.com/pactflow/pactflow-jsonschema-example.svg?branch=master)](https://travis-ci.com/pactflow/pactflow-jsonschema-example)
+
 This example shows how you could share a JSON Schema document with the Pact Broker as a substitute for a Pact contract, and validate that the contract is valid by a provider.
 
 It's based on the CI/CD workshop from https://docs.pactflow.io/docs/workshops/ci-cd/.
+
+It is using a public tenant on Pactflow, which you can access [here](https://test.pact.dius.com.au) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`.
 
 ## Pre-requisites
 
