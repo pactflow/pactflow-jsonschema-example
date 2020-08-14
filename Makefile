@@ -40,13 +40,15 @@ fake_ci_consumer:
 ci_consumer: clean generate_contract publish_contract can_i_deploy_consumer $(CONSUMER_DEPLOY_TARGET)
 
 generate_contract:
-	@echo "Generating contract from code ${TRAVIS_COMMIT}"
-	@./scripts/generate_contract.sh
+	@echo "\n==> 🤝 Generating contract from commit: ${TRAVIS_COMMIT}\n"
+	./scripts/generate_contract.sh
 
 publish_contract:
+	@echo "\n==> 📄 Publishing contract\n"
 	@"${PACT_CLI}" publish ${PACT_FILE} --consumer-app-version ${TRAVIS_COMMIT} --tag ${TRAVIS_BRANCH}
 
 can_i_deploy_consumer:
+	@echo "\n==> ⁉️  check if it's safe to release consumer to prod?\n"
 	@"${PACT_CLI}" broker can-i-deploy \
 	  --pacticipant ${PACTICIPANT} \
 	  --version ${TRAVIS_COMMIT} \
@@ -57,6 +59,7 @@ can_i_deploy_consumer:
 deploy_consumer: deploy tag_consumer_as_prod
 
 tag_consumer_as_prod:
+	@echo "\n🏷  Tagging consumer as deployed to 'prod'\n"
 	@"${PACT_CLI}" broker create-version-tag --pacticipant ${PACTICIPANT} --version ${TRAVIS_COMMIT} --tag prod
 
 ##
@@ -71,25 +74,27 @@ fake_ci_provider:
 ci_provider: clean fetch_contract test can_i_deploy_provider $(PROVIDER_DEPLOY_TARGET)
 
 fetch_contract:
+	@echo "\n==> 📄 Downloading contracts from Pactflow\n"
 	@curl ${AUTH_HEADER} "${PACT_BROKER_BASE_URL}/pacts/provider/${PROVIDER}/consumer/${PACTICIPANT}/latest/${TRAVIS_BRANCH}" > ${DOWNLOADED_RAW_PACT}
 	@cat ${DOWNLOADED_RAW_PACT} | jq .schema > ${DOWNLOADED_PACT}
 
 test:
-	@echo "comparing JSON schemas"
+	@echo "\n==> ✅ Running schema validation\n"
 	@RESULTS_URL=$(shell cat ${DOWNLOADED_RAW_PACT} | jq -r '.["_links"]|.["pb:publish-verification-results"].href'); \
 	${DIFF_CLI} ${PROVIDER_SCHEMA} ${DOWNLOADED_PACT}; \
 	if [ $$? != 0 ]; then \
 		echo "Contract verifications are not compatible, failing"; \
-		curl -v -X POST ${CONTENT_TYPE_HEADER} ${AUTH_HEADER} $$RESULTS_URL -d '{ "success": false, "providerApplicationVersion": "${TRAVIS_COMMIT}" }'; \
+		curl -X POST ${CONTENT_TYPE_HEADER} ${AUTH_HEADER} $$RESULTS_URL -d '{ "success": false, "providerApplicationVersion": "${TRAVIS_COMMIT}" }'; \
 		exit 1; \
 	else \
-		curl -v -X POST ${CONTENT_TYPE_HEADER} ${AUTH_HEADER} $$RESULTS_URL -d '{ "success": true, "providerApplicationVersion": "${TRAVIS_COMMIT}" }'; \
+		curl -X POST ${CONTENT_TYPE_HEADER} ${AUTH_HEADER} $$RESULTS_URL -d '{ "success": true, "providerApplicationVersion": "${TRAVIS_COMMIT}" }'; \
 		echo "Contract verification is complete!"; \
 	fi
 
 deploy_provider: deploy tag_provider_as_prod
 
 can_i_deploy_provider:
+	@echo "\n==> ⁉️  check if it's safe to release provider to prod?\n"
 	@"${PACT_CLI}" broker can-i-deploy \
 	  --pacticipant ${PROVIDER} \
 	  --version ${TRAVIS_COMMIT} \
@@ -97,22 +102,20 @@ can_i_deploy_provider:
 	  --retry-while-unknown 0 \
 	  --retry-interval 10
 
-deploy_consumer:
-	@echo "Deploying consumer to prod"
-
 tag_provider_as_prod:
+	@echo "\n🏷 ==> Tagging provider as deployed to 'prod'\n"
 	@"${PACT_CLI}" broker create-version-tag --pacticipant ${PROVIDER} --version ${TRAVIS_COMMIT} --tag prod
 
 ##
 ## Shared tasks
 ##
 no_deploy:
-	@echo "Not deploying as not on master branch"
+	@echo "\n==> Not deploying as not on master branch\n"
 
 deploy:
-	@echo "Deploying to prod"
+	@echo "\n==> 🚀 Deploying to prod\n"
 
 clean:
-	mkdir -p ${PWD}/.tmp
-	mkdir -p consumer/pacts
-	-rm .tmp/*.json consumer/pacts/*.json
+	@mkdir -p ${PWD}/.tmp
+	@mkdir -p consumer/pacts
+	-@rm .tmp/*.json consumer/pacts/*.json
