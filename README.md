@@ -45,7 +45,7 @@ make fake_ci_provider
 
 This will:
 
-1. Fetch the contract (currently it specifically fetches the exact consumer, but it should really use the "pacts for verification" endpoint)
+1. Fetch the contract (currently it specifically fetches the exact consumer, but it should really use the ["pacts for verification"](https://github.com/pact-foundation/pact_broker/issues/307) endpoint in a real implementation)
 1. Extract the schema from the interaction and perform a semantic diff using `json-schema-diff`.
 1. Send the verification results back to Pactflow
 1. Run the `can-i-deploy` check
