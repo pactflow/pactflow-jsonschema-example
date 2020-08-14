@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/pactflow/pactflow-jsonschema-example.svg?branch=master)](https://travis-ci.com/pactflow/pactflow-jsonschema-example)
 
-This example shows how you could share a JSON Schema document with the Pact Broker as a substitute for a Pact contract, and validate that the contract is valid by a provider.
+This example shows how you could share a JSON Schema document with the Pact Broker as a substitute for a Pact contract, and validate that the contract is valid by a provider using the same workflows you would with a standard Pact test.
 
 It's based on the CI/CD workshop from https://docs.pactflow.io/docs/workshops/ci-cd/.
 
