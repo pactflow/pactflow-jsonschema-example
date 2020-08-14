@@ -8,7 +8,7 @@ It's based on the CI/CD workshop from https://docs.pactflow.io/docs/workshops/ci
 
 It is using a public tenant on Pactflow, which you can access [here](https://test.pact.dius.com.au) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`.
 
-## Pre-requisites
+## Prerequisites
 
 * Docker
 * NodeJS 10+
