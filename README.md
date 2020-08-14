@@ -10,7 +10,7 @@ It's based on the CI/CD workshop from https://docs.pactflow.io/docs/workshops/ci
 * NodeJS 10+
 * jq
 
-0. Setup
+## Setup
 
 ```
 npm i
@@ -25,7 +25,7 @@ In the case of a JSON schema, this may be through static generation (e.g. using 
 To emulate a "CI" process, you can run:
 
 ```
-make ci_consumer
+make fake_ci_consumer
 ```
 
 This will:
@@ -40,7 +40,7 @@ This will:
 Uses https://www.npmjs.com/package/json-schema-diff to do a diff on the JSON schema to check for backwards incompatible contract changes.
 
 ```
-make ci_provider
+make fake_ci_provider
 ```
 
 This will:
