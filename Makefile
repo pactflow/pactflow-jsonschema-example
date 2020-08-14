@@ -113,4 +113,6 @@ deploy:
 	@echo "Deploying to prod"
 
 clean:
-	rm ./.tmp/*.json consumer/pacts/*.json; exit 0
+	mkdir -p ${PWD}/.tmp
+	mkdir -p consumer/pacts
+	-rm .tmp/*.json consumer/pacts/*.json
