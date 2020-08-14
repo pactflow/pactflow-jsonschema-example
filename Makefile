@@ -77,7 +77,7 @@ fetch_contract:
 test:
 	@echo "comparing JSON schemas"
 	@RESULTS_URL=$(shell cat ${DOWNLOADED_RAW_PACT} | jq -r '.["_links"]|.["pb:publish-verification-results"].href'); \
-	${DIFF_CLI} ${DOWNLOADED_PACT} ${PROVIDER_SCHEMA}; \
+	${DIFF_CLI} ${PROVIDER_SCHEMA} ${DOWNLOADED_PACT}; \
 	if [ $$? != 0 ]; then \
 		echo "Contract verifications are not compatible, failing"; \
 		curl -v -X POST ${CONTENT_TYPE_HEADER} ${AUTH_HEADER} $$RESULTS_URL -d '{ "success": false, "providerApplicationVersion": "${TRAVIS_COMMIT}" }'; \
