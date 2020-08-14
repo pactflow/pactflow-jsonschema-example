@@ -37,7 +37,7 @@ fake_ci_consumer:
 	TRAVIS_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	make ci_consumer
 
-ci_consumer: generate_contract publish_contract can_i_deploy_consumer $(CONSUMER_DEPLOY_TARGET)
+ci_consumer: clean generate_contract publish_contract can_i_deploy_consumer $(CONSUMER_DEPLOY_TARGET)
 
 generate_contract:
 	@echo "Generating contract from code ${TRAVIS_COMMIT}"
