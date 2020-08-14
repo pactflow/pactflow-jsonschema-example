@@ -41,7 +41,7 @@ ci_consumer: clean generate_contract publish_contract can_i_deploy_consumer $(CO
 
 generate_contract:
 	@echo "\n==> 🤝 Generating contract from commit: ${TRAVIS_COMMIT}\n"
-	./scripts/generate_contract.sh
+	@./scripts/generate_contract.sh
 
 publish_contract:
 	@echo "\n==> 📄 Publishing contract\n"
