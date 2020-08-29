@@ -6,7 +6,8 @@ GITHUB_WEBHOOK_UUID := "04510dc1-7f0a-4ed2-997d-114bfa86f8ad"
 PACT_CLI="docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:latest"
 PACT_FILE="${PWD}/consumer/pacts/schema-consumer_schema-provider.json"
 TEMPLATE_SCHEMA="${PWD}/pact-template.json"
-PROVIDER_SCHEMA="${PWD}/provider/schema/schema.json"
+PROVIDER_GOLD_SCHEMA="${PWD}/provider/schema/schema.json"
+PROVIDER_GENERATED_SCHEMA="${PWD}/.tmp/provider-generated-schema.json"
 DOWNLOADED_RAW_PACT="${PWD}/.tmp/consumer-pact.json"
 DOWNLOADED_PACT="${PWD}/.tmp/consumer-schema.json"
 DIFF_CLI="./node_modules/.bin/json-schema-diff"
@@ -37,11 +38,11 @@ fake_ci_consumer:
 	TRAVIS_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	make ci_consumer
 
-ci_consumer: clean generate_contract publish_contract can_i_deploy_consumer $(CONSUMER_DEPLOY_TARGET)
+ci_consumer: clean generate_consumer_contract publish_contract can_i_deploy_consumer $(CONSUMER_DEPLOY_TARGET)
 
-generate_contract:
+generate_consumer_contract:
 	@echo "\n==> 🤝 Generating contract from commit: ${TRAVIS_COMMIT}\n"
-	@./scripts/generate_contract.sh
+	@./scripts/generate_consumer_contract.sh
 
 publish_contract:
 	@echo "\n==> 📄 Publishing contract\n"
@@ -80,8 +81,9 @@ fetch_contract:
 
 test:
 	@echo "\n==> ✅ Running schema validation\n"
+	@./node_modules/.bin/typescript-json-schema --required "provider/product.ts" "ProductAPI.Product" > ${PROVIDER_GENERATED_SCHEMA}
 	@RESULTS_URL=$(shell cat ${DOWNLOADED_RAW_PACT} | jq -r '.["_links"]|.["pb:publish-verification-results"].href'); \
-	${DIFF_CLI} ${PROVIDER_SCHEMA} ${DOWNLOADED_PACT}; \
+	make provider_diff; \
 	if [ $$? != 0 ]; then \
 		echo "Contract verifications are not compatible, failing"; \
 		curl -X POST ${CONTENT_TYPE_HEADER} ${AUTH_HEADER} $$RESULTS_URL -d '{ "success": false, "providerApplicationVersion": "${TRAVIS_COMMIT}" }'; \
@@ -90,6 +92,9 @@ test:
 		curl -X POST ${CONTENT_TYPE_HEADER} ${AUTH_HEADER} $$RESULTS_URL -d '{ "success": true, "providerApplicationVersion": "${TRAVIS_COMMIT}" }'; \
 		echo "Contract verification is complete!"; \
 	fi
+
+provider_diff:
+	diff -wBb ${PROVIDER_GOLD_SCHEMA} ${PROVIDER_GENERATED_SCHEMA} && ${DIFF_CLI} ${PROVIDER_GOLD_SCHEMA} ${DOWNLOADED_PACT};
 
 deploy_provider: deploy tag_provider_as_prod
 

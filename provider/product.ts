@@ -1,5 +1,5 @@
-namespace ProductConsumer {
-  export class Product {
+namespace ProductAPI {
+ export class Product {
     constructor() {}
     item: string;
     price: number;

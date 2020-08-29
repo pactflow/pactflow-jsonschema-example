@@ -4,7 +4,9 @@
   "description": "Demonstrate how JSON Schemas may be used with Pactflow to manage API contracts",
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "build": "tsc provider/*.ts",
+    "start": "node provider/server.js"
   },
   "keywords": [
     "API",
@@ -19,5 +21,8 @@
   "devDependencies": {
     "json-schema-diff": "^0.15.0",
     "typescript-json-schema": "^0.42.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }

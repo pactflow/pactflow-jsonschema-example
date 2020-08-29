@@ -51,6 +51,24 @@ This will:
 
 1. Fetch the contract (currently it specifically fetches the exact consumer, but it should really use the ["pacts for verification"](https://github.com/pact-foundation/pact_broker/issues/307) endpoint in a real implementation)
 1. Extract the schema from the interaction and perform a semantic diff using `json-schema-diff`.
+1. Generate a schema from it's local type (`provider/product.ts`)
+1. Compare the downloaded schema to the golden schema (`provider/schema/schema.json`) - they must be identical
+1. Compare the downloaded schema to the golden schema (`provider/schema/schema.json`) - the downloaded schema (contract) must be _compatible_ with the golden schema
 1. Send the verification results back to Pactflow
 1. Run the `can-i-deploy` check
 1. If successful, "deploy" to production and tag the application version as moved to `prod`
+
+## Running the Provider
+
+
+```
+npm run build
+npm start
+curl localhost:3000 | jq .
+  # will produce:
+  #
+  # {
+  #   "item": "pancakes",
+  #   "price": 27.4
+  # }
+```
