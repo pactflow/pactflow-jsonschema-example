@@ -23,6 +23,6 @@
     "typescript-json-schema": "^0.42.0"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.19.2"
   }
 }
