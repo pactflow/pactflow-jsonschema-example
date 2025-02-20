@@ -20,7 +20,7 @@
   "license": "ISC",
   "devDependencies": {
     "json-schema-diff": "0.15.0",
-    "typescript-json-schema": "0.42.0"
+    "typescript-json-schema": "0.65.1"
   },
   "dependencies": {
     "express": "^4.17.1"
