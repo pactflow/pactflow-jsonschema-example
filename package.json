@@ -19,8 +19,8 @@
   "author": "Matt Fellows <m@onegeek.com.au>",
   "license": "ISC",
   "devDependencies": {
-    "json-schema-diff": "^0.15.0",
-    "typescript-json-schema": "^0.42.0"
+    "json-schema-diff": "0.15.0",
+    "typescript-json-schema": "0.42.0"
   },
   "dependencies": {
     "express": "^4.17.1"
